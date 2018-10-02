@@ -1,0 +1,57 @@
+module github.com/Mongey/terraform-provider-kafka
+
+require (
+	github.com/Shopify/sarama v1.17.0
+	github.com/agext/levenshtein v1.2.1
+	github.com/apparentlymart/go-cidr v0.0.0-20170616213631-2bd8b58cf427
+	github.com/apparentlymart/go-textseg v0.0.0-20170531203952-b836f5c4d331
+	github.com/armon/go-radix v0.0.0-20170727155443-1fca145dffbc
+	github.com/aws/aws-sdk-go v1.13.10
+	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d
+	github.com/bgentry/speakeasy v0.1.0
+	github.com/blang/semver v3.5.1+incompatible
+	github.com/davecgh/go-spew v1.1.0
+	github.com/eapache/go-resiliency v1.0.0
+	github.com/eapache/go-xerial-snappy v0.0.0-20160609142408-bb955e01b934
+	github.com/eapache/queue v1.1.0
+	github.com/go-ini/ini v1.33.0
+	github.com/golang/protobuf v1.0.0
+	github.com/golang/snappy v0.0.0-20170215233205-553a64147049
+	github.com/hashicorp/errwrap v0.0.0-20141028054710-7554cd9344ce
+	github.com/hashicorp/go-cleanhttp v0.0.0-20171218145408-d5fe4b57a186
+	github.com/hashicorp/go-getter v0.0.0-20180226183729-64040d90d4ab
+	github.com/hashicorp/go-hclog v0.0.0-20180122232401-5bcb0f17e364
+	github.com/hashicorp/go-multierror v0.0.0-20171204182908-b7773ae21874
+	github.com/hashicorp/go-plugin v0.0.0-20180228214404-956b76edd382
+	github.com/hashicorp/go-uuid v0.0.0-20180228145832-27454136f036
+	github.com/hashicorp/go-version v0.0.0-20171129150820-4fe82ae3040f
+	github.com/hashicorp/hcl v0.0.0-20171017181929-23c074d0eceb
+	github.com/hashicorp/hcl2 v0.0.0-20180308163058-5f8ed954abd8
+	github.com/hashicorp/hil v0.0.0-20170627220502-fa9f258a9250
+	github.com/hashicorp/logutils v0.0.0-20150609070431-0dc08b1671f3
+	github.com/hashicorp/terraform v0.0.0-20180308182902-5727d3335247
+	github.com/hashicorp/yamux v0.0.0-20171219165022-683f49123a33
+	github.com/jmespath/go-jmespath v0.0.0-20160202185014-0b12d6b521d8
+	github.com/mattn/go-isatty v0.0.3
+	github.com/mitchellh/cli v0.0.0-20180117155440-518dc677a1e1
+	github.com/mitchellh/copystructure v0.0.0-20161013195342-5af94aef99f5
+	github.com/mitchellh/go-homedir v0.0.0-20161203194507-b8bc1bf76747
+	github.com/mitchellh/go-testing-interface v0.0.0-20171004221916-a61a99592b77
+	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7
+	github.com/mitchellh/hashstructure v0.0.0-20170609045927-2bca23e0e452
+	github.com/mitchellh/mapstructure v0.0.0-20180220230111-00c29f56e238
+	github.com/mitchellh/reflectwalk v0.0.0-20170726202117-63d60e9d0dbc
+	github.com/oklog/run v1.0.0
+	github.com/pierrec/lz4 v0.0.0-20171218195038-2fcda4cb7018
+	github.com/pierrec/xxHash v0.1.1
+	github.com/posener/complete v0.0.0-20171104095702-dc2bc5a81acc
+	github.com/rcrowley/go-metrics v0.0.0-20180125231941-8732c616f529
+	github.com/ulikunitz/xz v0.5.4
+	github.com/zclconf/go-cty v0.0.0-20180302160414-49fa5e03c418
+	golang.org/x/crypto v0.0.0-20180308185624-c7dcf104e3a7
+	golang.org/x/net v0.0.0-20180308154319-d0aafc73d5cd
+	golang.org/x/sys v0.0.0-20180308152046-7dca6fe1f437
+	golang.org/x/text v0.3.0
+	google.golang.org/genproto v0.0.0-20180306020942-df60624c1e9b
+	google.golang.org/grpc v1.10.0
+)
