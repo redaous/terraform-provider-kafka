@@ -55,8 +55,14 @@ func aclCreate(d *schema.ResourceData, meta interface{}) error {
 	a := aclInfo(d)
 
 	log.Printf("[INFO] Creating ACL %s", a)
-	err := c.CreateACL(a)
 
+	r, err := a.ToACLCreation()
+	if err != nil {
+		log.Println("[ERROR] Invalid")
+		return err
+	}
+
+	err = c.CreateACL(r)
 	if err != nil {
 		log.Println("[ERROR] Failed to create ACL")
 		return err
@@ -71,7 +77,13 @@ func aclDelete(d *schema.ResourceData, meta interface{}) error {
 	c := meta.(*Client)
 	a := aclInfo(d)
 	log.Printf("[INFO] Deleteing ACL %s", a)
-	return c.DeleteACL(a)
+
+	filter, err := tfToACLFilter(a)
+	if err != nil {
+		return err
+	}
+
+	return c.DeleteACL(filter)
 }
 
 func aclRead(d *schema.ResourceData, meta interface{}) error {
@@ -92,8 +104,8 @@ func aclRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func aclInfo(d *schema.ResourceData) stringlyTypedACL {
-	s := stringlyTypedACL{
+func aclInfo(d *schema.ResourceData) RawACL {
+	s := RawACL{
 		ACL: ACL{
 			Principal:      d.Get("acl_principal").(string),
 			Host:           d.Get("acl_host").(string),
