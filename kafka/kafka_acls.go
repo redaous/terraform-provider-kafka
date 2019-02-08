@@ -16,8 +16,9 @@ type ACL struct {
 }
 
 type Resource struct {
-	Type string
-	Name string
+	Type              string
+	Name              string
+	PatternTypeFilter string
 }
 
 type stringlyTypedACL struct {
@@ -44,6 +45,10 @@ func tfToAclCreation(s stringlyTypedACL) (*sarama.AclCreation, error) {
 	if rType == unknownConversion {
 		return acl, fmt.Errorf("Unknown resource type: %s", s.Resource.Type)
 	}
+	patternType := stringToACLPrefix(s.Resource.PatternTypeFilter)
+	if patternType == unknownConversion {
+		return acl, fmt.Errorf("Unknown pattern type filter: '%s'", s.Resource.PatternTypeFilter)
+	}
 
 	acl.Acl = sarama.Acl{
 		Principal:      s.ACL.Principal,
@@ -52,8 +57,9 @@ func tfToAclCreation(s stringlyTypedACL) (*sarama.AclCreation, error) {
 		PermissionType: pType,
 	}
 	acl.Resource = sarama.Resource{
-		ResourceType: rType,
-		ResourceName: s.Resource.Name,
+		ResourceType:       rType,
+		ResourceName:       s.Resource.Name,
+		ResoucePatternType: patternType,
 	}
 
 	return acl, nil
@@ -87,6 +93,20 @@ func tfToAclFilter(s stringlyTypedACL) (sarama.AclFilter, error) {
 	f.ResourceType = rType
 
 	return f, nil
+}
+
+func stringToACLPrefix(s string) sarama.AclResourcePatternType {
+	switch s {
+	case "Any":
+		return sarama.AclPatternAny
+	case "Match":
+		return sarama.AclPatternMatch
+	case "Literal":
+		return sarama.AclPatternLiteral
+	case "Prefixed":
+		return sarama.AclPatternPrefixed
+	}
+	return unknownConversion
 }
 
 func (c *Client) DeleteACL(s stringlyTypedACL) error {
@@ -129,6 +149,7 @@ func (c *Client) CreateACL(s stringlyTypedACL) error {
 		return err
 	}
 	req := &sarama.CreateAclsRequest{
+		Version:      int(c.getCreateAclsRequestAPIVersion()),
 		AclCreations: []*sarama.AclCreation{ac},
 	}
 
@@ -221,31 +242,39 @@ func (c *Client) ListACLs() ([]*sarama.ResourceAcls, error) {
 	}
 	allResources := []*sarama.DescribeAclsRequest{
 		&sarama.DescribeAclsRequest{
+			Version: int(c.getCreateAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
-				ResourceType:   sarama.AclResourceTopic,
-				PermissionType: sarama.AclPermissionAny,
-				Operation:      sarama.AclOperationAny,
+				ResourceType:              sarama.AclResourceTopic,
+				ResourcePatternTypeFilter: sarama.AclPatternAny,
+				PermissionType:            sarama.AclPermissionAny,
+				Operation:                 sarama.AclOperationAny,
 			},
 		},
 		&sarama.DescribeAclsRequest{
+			Version: int(c.getCreateAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
-				ResourceType:   sarama.AclResourceGroup,
-				PermissionType: sarama.AclPermissionAny,
-				Operation:      sarama.AclOperationAny,
+				ResourceType:              sarama.AclResourceGroup,
+				ResourcePatternTypeFilter: sarama.AclPatternAny,
+				PermissionType:            sarama.AclPermissionAny,
+				Operation:                 sarama.AclOperationAny,
 			},
 		},
 		&sarama.DescribeAclsRequest{
+			Version: int(c.getCreateAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
-				ResourceType:   sarama.AclResourceCluster,
-				PermissionType: sarama.AclPermissionAny,
-				Operation:      sarama.AclOperationAny,
+				ResourceType:              sarama.AclResourceCluster,
+				ResourcePatternTypeFilter: sarama.AclPatternAny,
+				PermissionType:            sarama.AclPermissionAny,
+				Operation:                 sarama.AclOperationAny,
 			},
 		},
 		&sarama.DescribeAclsRequest{
+			Version: int(c.getCreateAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
-				ResourceType:   sarama.AclResourceTransactionalID,
-				PermissionType: sarama.AclPermissionAny,
-				Operation:      sarama.AclOperationAny,
+				ResourceType:              sarama.AclResourceTransactionalID,
+				ResourcePatternTypeFilter: sarama.AclPatternAny,
+				PermissionType:            sarama.AclPermissionAny,
+				Operation:                 sarama.AclOperationAny,
 			},
 		},
 	}

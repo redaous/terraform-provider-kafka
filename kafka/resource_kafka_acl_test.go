@@ -52,6 +52,10 @@ func testResourceACL_initialCheck(s *terraform.State) error {
 	if acls[0].Acls[0].PermissionType != sarama.AclPermissionAllow {
 		return fmt.Errorf("Should be Allow, not %v", acls[0].Acls[0].PermissionType)
 	}
+
+	if acls[0].Resource.ResoucePatternType != sarama.AclPatternLiteral {
+		return fmt.Errorf("Should be Literal, not %v", acls[0].Resource.ResoucePatternType)
+	}
 	return nil
 }
 
@@ -101,6 +105,7 @@ provider "kafka" {
 resource "kafka_acl" "test" {
 	resource_name       = "syslog"
 	resource_type       = "Topic"
+	resource_pattern_type_filter = "Literal"
 	acl_principal       = "User:Alice"
 	acl_host            = "*"
 	acl_operation       = "Write"
@@ -120,6 +125,7 @@ provider "kafka" {
 resource "kafka_acl" "test" {
 	resource_name       = "syslog"
 	resource_type       = "Topic"
+	resource_pattern_type_filter = "Literal"
 	acl_principal       = "User:Alice"
 	acl_host            = "*"
 	acl_operation       = "Write"

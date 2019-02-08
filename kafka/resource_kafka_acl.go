@@ -26,6 +26,13 @@ func kafkaACLResource() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
+			"resource_pattern_type_filter": {
+				Type:     schema.TypeString,
+				Required: false,
+				Optional: true,
+				Default:  "Literal",
+				ForceNew: true,
+			},
 			"acl_principal": {
 				Type:     schema.TypeString,
 				Required: true,
@@ -101,8 +108,9 @@ func aclInfo(d *schema.ResourceData) stringlyTypedACL {
 			PermissionType: d.Get("acl_permission_type").(string),
 		},
 		Resource: Resource{
-			Type: d.Get("resource_type").(string),
-			Name: d.Get("resource_name").(string),
+			Type:              d.Get("resource_type").(string),
+			Name:              d.Get("resource_name").(string),
+			PatternTypeFilter: d.Get("resource_pattern_type_filter").(string),
 		},
 	}
 	return s
