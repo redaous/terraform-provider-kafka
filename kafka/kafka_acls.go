@@ -121,7 +121,7 @@ func (c *Client) DeleteACL(s stringlyTypedACL) error {
 	}
 
 	req := &sarama.DeleteAclsRequest{
-		Version: int(c.getCreateAclsRequestAPIVersion()),
+		Version: int(c.getDeleteAclsRequestAPIVersion()),
 		Filters: []*sarama.AclFilter{&filter},
 	}
 	log.Printf("[INFO] Deleting ACL %v\n", s)
@@ -233,6 +233,7 @@ func stringToAclPermissionType(in string) sarama.AclPermissionType {
 }
 
 func (c *Client) ListACLs() ([]*sarama.ResourceAcls, error) {
+	log.Printf("[DEBUG] Listing all ACLS")
 	broker, err := c.client.Controller()
 	if err != nil {
 		return nil, err
@@ -241,9 +242,10 @@ func (c *Client) ListACLs() ([]*sarama.ResourceAcls, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	allResources := []*sarama.DescribeAclsRequest{
 		&sarama.DescribeAclsRequest{
-			Version: int(c.getCreateAclsRequestAPIVersion()),
+			Version: int(c.getDescribeAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
 				ResourceType:              sarama.AclResourceTopic,
 				ResourcePatternTypeFilter: sarama.AclPatternAny,
@@ -252,7 +254,7 @@ func (c *Client) ListACLs() ([]*sarama.ResourceAcls, error) {
 			},
 		},
 		&sarama.DescribeAclsRequest{
-			Version: int(c.getCreateAclsRequestAPIVersion()),
+			Version: int(c.getDescribeAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
 				ResourceType:              sarama.AclResourceGroup,
 				ResourcePatternTypeFilter: sarama.AclPatternAny,
@@ -261,7 +263,7 @@ func (c *Client) ListACLs() ([]*sarama.ResourceAcls, error) {
 			},
 		},
 		&sarama.DescribeAclsRequest{
-			Version: int(c.getCreateAclsRequestAPIVersion()),
+			Version: int(c.getDescribeAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
 				ResourceType:              sarama.AclResourceCluster,
 				ResourcePatternTypeFilter: sarama.AclPatternAny,
@@ -270,7 +272,7 @@ func (c *Client) ListACLs() ([]*sarama.ResourceAcls, error) {
 			},
 		},
 		&sarama.DescribeAclsRequest{
-			Version: int(c.getCreateAclsRequestAPIVersion()),
+			Version: int(c.getDescribeAclsRequestAPIVersion()),
 			AclFilter: sarama.AclFilter{
 				ResourceType:              sarama.AclResourceTransactionalID,
 				ResourcePatternTypeFilter: sarama.AclPatternAny,
