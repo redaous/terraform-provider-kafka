@@ -27,7 +27,7 @@ type stringlyTypedACL struct {
 }
 
 func (a stringlyTypedACL) String() string {
-	return strings.Join([]string{a.ACL.Principal, a.ACL.Host, a.ACL.Operation, a.ACL.PermissionType, a.Resource.Type, a.Resource.Name}, "|")
+	return strings.Join([]string{a.ACL.Principal, a.ACL.Host, a.ACL.Operation, a.ACL.PermissionType, a.Resource.Type, a.Resource.Name, a.Resource.PatternTypeFilter}, "|")
 }
 
 func tfToAclCreation(s stringlyTypedACL) (*sarama.AclCreation, error) {
@@ -121,6 +121,7 @@ func (c *Client) DeleteACL(s stringlyTypedACL) error {
 	}
 
 	req := &sarama.DeleteAclsRequest{
+		Version: int(c.getCreateAclsRequestAPIVersion()),
 		Filters: []*sarama.AclFilter{&filter},
 	}
 	log.Printf("[INFO] Deleting ACL %v\n", s)

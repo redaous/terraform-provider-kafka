@@ -90,6 +90,9 @@ func testResourceACL_updateCheck(s *terraform.State) error {
 		return fmt.Errorf("Should be Deny, not %v", acls[0].Acls[0].PermissionType)
 	}
 
+	if acls[0].Resource.ResoucePatternType != sarama.AclPatternMatch {
+		return fmt.Errorf("Should be Match, not %v", acls[0].Resource.ResoucePatternType)
+	}
 	return nil
 }
 
@@ -125,7 +128,7 @@ provider "kafka" {
 resource "kafka_acl" "test" {
 	resource_name       = "syslog"
 	resource_type       = "Topic"
-	resource_pattern_type_filter = "Literal"
+	resource_pattern_type_filter = "Match"
 	acl_principal       = "User:Alice"
 	acl_host            = "*"
 	acl_operation       = "Write"
