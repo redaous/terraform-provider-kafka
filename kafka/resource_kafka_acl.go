@@ -95,7 +95,6 @@ func aclRead(d *schema.ResourceData, meta interface{}) error {
 		}
 
 	}
-	//panic(fmt.Sprintf("ACL read not implmented: %v", d))
 	return nil
 }
 
