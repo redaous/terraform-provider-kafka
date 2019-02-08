@@ -82,8 +82,10 @@ func aclDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func aclRead(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[INFO] Reading ACL")
 	c := meta.(*Client)
 	a := aclInfo(d)
+	log.Printf("[INFO] Reading ACL %s", a)
 
 	currentAcls, err := c.ListACLs()
 	if err != nil {
@@ -91,6 +93,7 @@ func aclRead(d *schema.ResourceData, meta interface{}) error {
 	}
 	for _, c := range currentAcls {
 		if c.ResourceName == a.Resource.Name {
+			log.Printf("[INFO] Found ACL %v", c)
 			return nil
 		}
 
