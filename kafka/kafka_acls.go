@@ -110,6 +110,7 @@ func stringToACLPrefix(s string) sarama.AclResourcePatternType {
 }
 
 func (c *Client) DeleteACL(s stringlyTypedACL) error {
+	log.Printf("[INFO] Deleting ACL %v\n", s)
 	broker, err := c.client.Controller()
 	if err != nil {
 		return err
@@ -124,7 +125,6 @@ func (c *Client) DeleteACL(s stringlyTypedACL) error {
 		Version: int(c.getDeleteAclsRequestAPIVersion()),
 		Filters: []*sarama.AclFilter{&filter},
 	}
-	log.Printf("[INFO] Deleting ACL %v\n", s)
 
 	res, err := broker.DeleteAcls(req)
 	if err != nil {
