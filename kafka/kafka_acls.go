@@ -92,6 +92,12 @@ func tfToAclFilter(s stringlyTypedACL) (sarama.AclFilter, error) {
 	}
 	f.ResourceType = rType
 
+	patternType := stringToACLPrefix(s.Resource.PatternTypeFilter)
+	if patternType == unknownConversion {
+		return f, fmt.Errorf("Unknown pattern type filter: '%s'", s.Resource.PatternTypeFilter)
+	}
+	f.ResourcePatternTypeFilter = patternType
+
 	return f, nil
 }
 
