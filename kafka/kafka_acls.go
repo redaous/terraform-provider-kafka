@@ -140,6 +140,7 @@ func (c *Client) DeleteACL(s stringlyTypedACL) error {
 }
 
 func (c *Client) CreateACL(s stringlyTypedACL) error {
+	log.Printf("[DEBUG] Creating ACL %s", s)
 	broker, err := c.client.Controller()
 	if err != nil {
 		return err
@@ -233,7 +234,7 @@ func stringToAclPermissionType(in string) sarama.AclPermissionType {
 }
 
 func (c *Client) ListACLs() ([]*sarama.ResourceAcls, error) {
-	log.Printf("[DEBUG] Listing all ACLS")
+	log.Printf("[INFO] Listing all ACLS")
 	broker, err := c.client.Controller()
 	if err != nil {
 		return nil, err

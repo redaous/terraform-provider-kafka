@@ -89,8 +89,8 @@ func testResourceACL_updateCheck(s *terraform.State) error {
 		return fmt.Errorf("Should be Deny, not %v", acls[0].Acls[0].PermissionType)
 	}
 
-	if acls[0].Resource.ResoucePatternType != sarama.AclPatternMatch {
-		return fmt.Errorf("Should be Match, not %v", acls[0].Resource.ResoucePatternType)
+	if acls[0].Resource.ResoucePatternType != sarama.AclPatternPrefixed {
+		return fmt.Errorf("Should be Prefixed, not %v", acls[0].Resource.ResoucePatternType)
 	}
 	return nil
 }
