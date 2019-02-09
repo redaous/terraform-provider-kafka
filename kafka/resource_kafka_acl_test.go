@@ -39,7 +39,6 @@ func testResourceACL_initialCheck(s *terraform.State) error {
 	}
 
 	client := testProvider.Meta().(*Client)
-
 	acls, err := client.ListACLs()
 	if err != nil {
 		return err
@@ -128,7 +127,7 @@ provider "kafka" {
 resource "kafka_acl" "test" {
 	resource_name       = "syslog"
 	resource_type       = "Topic"
-	resource_pattern_type_filter = "Match"
+	resource_pattern_type_filter = "Prefixed"
 	acl_principal       = "User:Alice"
 	acl_host            = "*"
 	acl_operation       = "Write"
